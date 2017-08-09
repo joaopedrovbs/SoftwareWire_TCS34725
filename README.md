@@ -3,9 +3,9 @@ Using Adafruit's TCS34725 with SoftwareWire to use two sensors on the same micro
 
 To run this you should also use [SoftwareWire](https://github.com/Testato/SoftwareWire) as one of your Arduino Libraries.
 
-## Usage
+# Usage
 
-### Constructor
+## Constructor
 
 To create your instance of SoftwareWire_TCS34725 use the constructor `SoftwareWire_TCS34725`
 
@@ -25,3 +25,48 @@ SoftwareWire_TCS34725(int sda, int scl, soft_tcs34725IntegrationTime_t = SOFT_TC
 |SOFT_TCS34725_INTEGRATIONTIME_101MS|     42 cycles    |   43008   |SOFT_TCS34725_GAIN_60X|
 |SOFT_TCS34725_INTEGRATIONTIME_154MS|     64 cycles    |   65535   ||
 |SOFT_TCS34725_INTEGRATIONTIME_700MS|    256 cycles    |   65535   ||
+
+## Setup
+
+### Initiate sensor:
+
+```c
+boolean begin(void);
+```
+ * Returns `true` if connected to sensor and fully working, `false` if something went wrong.
+### Set Interrupts
+```c
+  void setInterrupt(boolean flag);
+```
+* Sets interrupt on sensor. The boolean parameter can be used to control the LED. 
+```c
+  void clearInterrupt(void);
+```
+* Clear interrupt status 
+```c
+  void setIntLimits(uint16_t l, uint16_t h);
+```
+* Sets the high and low threshold levels for interrupts.
+
+## Sensor Readings
+
+### Raw Data
+```c
+void     getRawData(uint16_t *r, uint16_t *g, uint16_t *b, uint16_t *c);
+```
+* Raw data of RED, GREEN, BLUE and CLEAR channels.
+
+### Color Temperature
+```c
+ uint16_t calculateColorTemperature(uint16_t r, uint16_t g, uint16_t b);
+```
+* Converts the raw R/G/B values to color temperature in degrees
+            Kelvin
+### Calculate Lux
+```c
+  uint16_t calculateLux(uint16_t r, uint16_t g, uint16_t b);
+```
+* Converts the raw R/G/B values to lux
+
+## Credits
+All of the credits of writing this library goes to Adafruit, they did the main work on their [Adafruit_TCS34725](https://github.com/adafruit/Adafruit_TCS34725) repo. I just modified it to have two sensors working alongside, on with their library another with this one using `SoftwareWire`.
